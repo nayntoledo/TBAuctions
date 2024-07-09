@@ -1,0 +1,11 @@
+# Load the provided CSV files from the specified directory
+auctions_df = pd.read_csv('C:/Users/Nayane/Downloads/tbauctions/auctions.csv')
+bids_df = pd.read_csv('C:/Users/Nayane/Downloads/tbauctions/bids.csv')
+buyers_df = pd.read_csv('C:/Users/Nayane/Downloads/tbauctions/buyers.csv')
+
+# Count the number of rows in each dataframe
+auctions_rows = auctions_df.shape[0]
+bids_rows = bids_df.shape[0]
+buyers_rows = buyers_df.shape[0]
+
+auctions_rows, bids_rows, buyers_rows
