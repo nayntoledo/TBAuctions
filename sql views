@@ -1,0 +1,49 @@
+-- Most successful_auctions
+CREATE VIEW `successful_auctions` AS 
+SELECT 
+    `da`.`auction_type` AS `auction_type`,
+    COUNT(`fb`.`auctionid`) AS `auction_count`,
+    SUM(`fb`.`price`) AS `total_revenue` 
+FROM 
+    (`fact_bids` `fb` 
+    JOIN `dim_auction` `da` ON (`fb`.`auctionid` = `da`.`auctionid`)) 
+GROUP BY 
+    `da`.`auction_type` 
+ORDER BY 
+    `total_revenue` DESC;
+
+
+-- Top Buyers
+CREATE VIEW `top_buyers` AS 
+SELECT 
+    `fb`.`bidder` AS `buyer_username`,
+    `db`.`name` AS `buyer_name`,
+    `db`.`email` AS `buyer_email`,
+    SUM(`fb`.`price`) AS `total_revenue` 
+FROM 
+    (`fact_bids` `fb` 
+    JOIN `dim_buyer` `db` ON (`fb`.`bidder` = `db`.`username`)) 
+GROUP BY 
+    `fb`.`bidder`,
+    `db`.`name`,
+    `db`.`email` 
+ORDER BY 
+    `total_revenue` DESC;
+
+
+-- Top Buyers
+CREATE VIEW `top_buyers` AS 
+SELECT 
+    `fb`.`bidder` AS `buyer_username`,
+    `db`.`name` AS `buyer_name`,
+    `db`.`email` AS `buyer_email`,
+    SUM(`fb`.`price`) AS `total_revenue` 
+FROM 
+    (`fact_bids` `fb` 
+    JOIN `dim_buyer` `db` ON (`fb`.`bidder` = `db`.`username`)) 
+GROUP BY 
+    `fb`.`bidder`,
+    `db`.`name`,
+    `db`.`email` 
+ORDER BY 
+    `total_revenue` DESC;
