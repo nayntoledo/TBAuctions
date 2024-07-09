@@ -31,19 +31,19 @@ ORDER BY
     `total_revenue` DESC;
 
 
--- Top Buyers
-CREATE VIEW `top_buyers` AS 
+-- Top Sellers
+CREATE VIEW `top_sellers` AS 
 SELECT 
-    `fb`.`bidder` AS `buyer_username`,
-    `db`.`name` AS `buyer_name`,
-    `db`.`email` AS `buyer_email`,
+    `da`.`username` AS `seller_username`,
+    `da`.`name` AS `seller_name`,
+    `da`.`email` AS `seller_email`,
     SUM(`fb`.`price`) AS `total_revenue` 
 FROM 
     (`fact_bids` `fb` 
-    JOIN `dim_buyer` `db` ON (`fb`.`bidder` = `db`.`username`)) 
+    JOIN `dim_auction` `da` ON (`fb`.`auctionid` = `da`.`auctionid`)) 
 GROUP BY 
-    `fb`.`bidder`,
-    `db`.`name`,
-    `db`.`email` 
+    `da`.`username`,
+    `da`.`name`,
+    `da`.`email` 
 ORDER BY 
     `total_revenue` DESC;
