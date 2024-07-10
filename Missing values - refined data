@@ -1,0 +1,97 @@
+import pandas as pd
+
+# load the datasets
+auctions_df = pd.read_csv('C:/Users/Nayane/Downloads/tbauctions/auctions.csv')
+bids_df = pd.read_csv('C:/Users/Nayane/Downloads/tbauctions/bids.csv')
+buyers_df = pd.read_csv('C:/Users/Nayane/Downloads/tbauctions/buyers.csv')
+
+# check for duplicates and missing data in each dataframe
+buyers_duplicates = buyers_df.duplicated().sum()
+buyers_missing = buyers_df.isnull().sum()
+
+bids_duplicates = bids_df.duplicated().sum()
+bids_missing = bids_df.isnull().sum()
+
+auctions_duplicates = auctions_df.duplicated().sum()
+auctions_missing = auctions_df.isnull().sum()
+
+# remove duplicates
+buyers_df_cleaned = buyers_df.drop_duplicates()
+bids_df_cleaned = bids_df.drop_duplicates()
+auctions_df_cleaned = auctions_df.drop_duplicates()
+
+# display the results for duplicates and missing data
+buyers_duplicates, buyers_missing, bids_duplicates, bids_missing, auctions_duplicates, auctions_missing
+
+# Buyers Data
+# Duplicates: 0
+# Missing Data:
+# username: 1 missing value
+
+# bids Data
+# Duplicates: 5
+# Missing Data:
+# bid: 10 missing values
+# bidder: 16 missing values
+
+# auctions Data
+# Duplicates: 0
+# Missing Data: None
+
+
+
+
+# sollving missing data by removing rows with missing values
+# buyers: Removing row with missing username
+buyers_df_cleaned = buyers_df_cleaned.dropna(subset=['username'])
+# bids: 
+bids_df_cleaned = bids_df_cleaned.dropna(subset=['bid', 'bidder'])
+
+import ace_tools as tools
+
+# save cleaned dataframes to new CSV files
+buyers_df_cleaned.to_csv('C:/Users/Nayane/Downloads/tbauctions/buyers_refined.csv', index=False)
+bids_df_cleaned.to_csv('C:/Users/Nayane/Downloads/tbauctions/bids_refined.csv', index=False)
+auctions_df_cleaned.to_csv('C:/Users/Nayane/Downloads/tbauctions/auctions_refined.csv', index=False)
+
+tools.display_dataframe_to_user(name="Cleaned Buyers Data", dataframe=buyers_df_cleaned)
+tools.display_dataframe_to_user(name="Cleaned Bids Data", dataframe=bids_df_cleaned)
+tools.display_dataframe_to_user(name="Cleaned Auctions Data", dataframe=auctions_df_cleaned)
+
+buyers_df_cleaned.shape, bids_df_cleaned.shape, auctions_df_cleaned.shape
+
+# Result
+# ((3387, 4), (10660, 10), (628, 6))
+
+
+
+
+
+# describe the rows that were duplicates and the rows that had missing data before cleaning
+# identifying duplicates
+bids_duplicates_rows = bids_df[bids_df.duplicated()]
+# missing data rows
+buyers_missing_rows = buyers_df[buyers_df['username'].isnull()]
+bids_missing_rows = bids_df[bids_df[['bid', 'bidder']].isnull().any(axis=1)]
+
+buyers_missing_rows, bids_duplicates_rows, bids_missing_rows
+
+
+# Buyers Data
+# Missing Data: 1 row with missing username:
+# id: 97cf122f-3147-4239-b0c1-99a986ce20da
+# name: Lisa White
+# email: lisawhite@example.com
+# username: NaN
+
+
+# Bids Data
+# Duplicates: 5 rows
+# AUCTIONID: 3019070859, bid: 13.00, bidder: fionasch
+# AUCTIONID: 3019873456, bid: 11.00, bidder: deaglekl
+# AUCTIONID: 3024579522, bid: 188.00, bidder: albie_27
+
+# Missing Data: 16 rows with missing bid or bidder:
+# AUCTIONID: 1643187764, bid: NaN, bidder: birdkowsky
+# AUCTIONID: 1648968984, bid: NaN, bidder: jeongb678@cs.com
+# AUCTIONID: 3015467305, bid: NaN, bidder: thebeemanone
